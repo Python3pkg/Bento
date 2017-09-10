@@ -1,7 +1,7 @@
 import sys
 import traceback
 if sys.version_info[0] < 3:
-    import Queue as queue
+    import queue as queue
 else:
     import queue
 import threading

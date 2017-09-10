@@ -1,7 +1,7 @@
 import os
 import sys
 import copy
-import warnings
+from . import warnings
 
 from bento.compat.api import json
 import bento.compat.api as compat
@@ -68,7 +68,7 @@ InstalledSection(%(category)s,
 def iter_source_files(file_sections):
     for kind in file_sections:
         if not kind in ["executables"]:
-            for name, section in file_sections[kind].items():
+            for name, section in list(file_sections[kind].items()):
                 for f in section:
                     yield f[0]
 
@@ -104,7 +104,7 @@ def iter_files(file_sections):
                 return True
 
     for kind in file_sections:
-        for name, section in file_sections[kind].items():
+        for name, section in list(file_sections[kind].items()):
             for source, target in section:
                 if not _is_redundant(source, target):
                     yield kind, source, target
@@ -142,7 +142,7 @@ class BuildManifest(object):
         install_paths = data.get("install_paths", None)
 
         executables = {}
-        for name, executable in data["executables"].items():
+        for name, executable in list(data["executables"].items()):
             executables[name] = Executable.from_parse_dict(fix_kw(executable))
 
         file_sections = {}
@@ -200,23 +200,23 @@ class BuildManifest(object):
         data["meta"] = self.meta
 
         executables = dict([(k, executable_to_json(v)) \
-                            for k, v in self.executables.items()])
+                            for k, v in list(self.executables.items())])
         data["executables"] = executables
         data["install_paths"] = self._path_variables
 
         file_sections = []
-        for category, value in self.file_sections.items():
+        for category, value in list(self.file_sections.items()):
             if category in ["pythonfiles", "bentofiles"]:
-                for i in value.values():
+                for i in list(value.values()):
                     i.srcdir = "$_srcrootdir"
                     file_sections.append(section_to_json(i))
             elif category in ["datafiles", "extensions", "executables",
                         "compiled_libraries"]:
-                for i in value.values():
+                for i in list(value.values()):
                     file_sections.append(section_to_json(i))
             else:
                 warnings.warn("Unknown category %r" % category)
-                for i in value.values():
+                for i in list(value.values()):
                     file_sections.append(section_to_json(i))
         data["file_sections"] = file_sections
         if "BENTOMAKER_PRETTY" in os.environ:
@@ -225,7 +225,7 @@ class BuildManifest(object):
             json.dump(data, fid, separators=(',', ':'))
 
     def update_paths(self, paths):
-        for k, v in paths.items():
+        for k, v in list(paths.items()):
             self._path_variables[k] = v
 
     def iter_built_files(self, src_root_node, scheme=None):
@@ -268,7 +268,7 @@ class BuildManifest(object):
         node_sections = {}
         for category in self.file_sections:
             node_sections[category] = {}
-            for name, section in self.file_sections[category].items():
+            for name, section in list(self.file_sections[category].items()):
                 srcdir = subst_vars(section.source_dir, variables)
                 target = subst_vars(section.target_dir, variables)
 

@@ -45,7 +45,7 @@ class TestLexer(TestCase):
                 if not i == j:
                     break
                 cnt += 1
-            print("Break at index %d" % cnt)
+            print(("Break at index %d" % cnt))
             raise e
 
     def _get_tokens(self, data):

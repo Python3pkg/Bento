@@ -113,7 +113,7 @@ def try_task_maker(conf, task_maker, name, body, headers, env=None):
 def _merge_env(_env, new_env):
     if new_env is not None:
         ret = copy.copy(_env)
-        for k, v in new_env.items():
+        for k, v in list(new_env.items()):
             if k in ret and hasattr(ret[k], "extend"):
                 old = copy.copy(_env[k])
                 old.extend(v)

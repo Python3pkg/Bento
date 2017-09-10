@@ -75,7 +75,7 @@ class EggInfo(object):
         ret = []
         ret.append("[console_scripts]")
         ret.extend([exe.full_representation() for exe in \
-                        self.executables.values()])
+                        list(self.executables.values())])
         ret.append('')
         return "\n".join(ret)
 
@@ -126,8 +126,8 @@ def extract_egg(egg, extract_dir):
 
     zid = zipfile.ZipFile(egg)
     try:
-        for type, sections in build_manifest.files.items():
-            for name, section in sections.items():
+        for type, sections in list(build_manifest.files.items()):
+            for name, section in list(sections.items()):
                 target_dir = build_manifest.resolve_path(section.target_dir)
                 section.source_dir = os.path.join(extract_dir, target_dir)
                 for source, target in section.files:

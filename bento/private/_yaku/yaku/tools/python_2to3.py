@@ -3,7 +3,7 @@ import sys
 import shutil
 import subprocess
 
-from cStringIO \
+from io \
     import \
         StringIO
 

@@ -7,7 +7,7 @@ except ImportError:
 import subprocess
 
 if sys.version_info[0] < 3:
-    from cPickle \
+    from pickle \
         import \
             dumps
 else:

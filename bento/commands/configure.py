@@ -144,25 +144,25 @@ def _setup_options_parser(options_context, package_options):
 
     # Create default path options
     scheme_opts = {}
-    for name, opt_d in scheme_opts_d.items():
+    for name, opt_d in list(scheme_opts_d.items()):
         o = opt_d.pop("opts")
         opt = Option(*o, **opt_d)
         scheme_opts[name] = opt
 
     # Add custom path options (as defined in bento.info) to the path scheme
-    for name, f in package_options.path_options.items():
+    for name, f in list(package_options.path_options.items()):
         scheme_opts[name] = \
             Option('--%s' % f.name,
                    help='%s [%s]' % (f.description, f.default_value))
 
     p.add_group("installation_options", "Installation fine tuning")
-    for opt in scheme_opts.values():
+    for opt in list(scheme_opts.values()):
         p.add_option(opt, "installation_options")
 
     flag_opts = {}
     if package_options.flag_options:
         p.add_group("optional_features", "Optional features")
-        for name, v in package_options.flag_options.items():
+        for name, v in list(package_options.flag_options.items()):
             flag_opts[name] = Option(
                     "--%s" % v.name,
                     help="%s [default=%s]" % (v.description, v.default_value))
@@ -183,7 +183,7 @@ Usage: bentomaker configure [OPTIONS]"""
         _setup_options_parser(options_context, package_options)
 
         self.scheme.update(_compute_scheme(package_options))
-        self.flags.extend(package_options.flag_options.keys())
+        self.flags.extend(list(package_options.flag_options.keys()))
 
     def run(self, ctx):
         bento_script = ctx.top_node.find_node(BENTO_SCRIPT)
@@ -211,6 +211,6 @@ def _compute_scheme(package_options):
     scheme['py_version_short'] = ".".join(str(part) for part in sys.version_info[:2])
     scheme['pkgname'] = package_options.name
 
-    for name, f in package_options.path_options.items():
+    for name, f in list(package_options.path_options.items()):
         scheme[name] = f.default_value
     return scheme

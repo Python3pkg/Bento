@@ -28,7 +28,7 @@ def _create_executable(name, executable, scripts_node):
 
 def install_inplace(pkg):
     """Install scripts of pkg in the current directory."""
-    for basename, executable in pkg.executables.items():
+    for basename, executable in list(pkg.executables.items()):
         version_str = ".".join([str(i) for i in sys.version_info[:2]])
         scripts_node = root._ctx.srcnode
         for name in [basename, "%s-%s" % (basename, version_str)]:

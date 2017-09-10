@@ -1,6 +1,6 @@
 import os
 
-from cPickle \
+from pickle \
     import \
         load, dump
 

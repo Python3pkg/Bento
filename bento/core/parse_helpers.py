@@ -28,12 +28,12 @@ def extract_top_dicts(d):
         libraries = d.pop("libraries")
     else:
         libraries = {}
-    for k in misc.keys():
+    for k in list(misc.keys()):
         if k in d:
             misc[k] = d.pop(k)
 
     if len(d) > 0:
-        raise ValueError("Unknown entry(ies) %s" % d.keys())
+        raise ValueError("Unknown entry(ies) %s" % list(d.keys()))
 
     return meta, libraries, options, misc
 
@@ -50,12 +50,12 @@ def extract_top_dicts_subento(d):
         libraries = {}
     # FIXME: bento vs subento visitor. Those should not be defined in the first
     # place for subento.
-    for library in libraries.values():
+    for library in list(libraries.values()):
         for k, field_name in [("install_requires", "InstallRequires"), ("py_modules", "Modules")]:
             v = library.pop(k)
             if len(v) > 0:
                 raise InvalidPackage("Invalid entry %r in recursed bento file(s)" % field_name)
-    for k in misc.keys():
+    for k in list(misc.keys()):
         if k in d:
             misc[k] = d.pop(k)
 
@@ -66,6 +66,6 @@ def extract_top_dicts_subento(d):
         if len(v) > 0:
             raise ValueError("Invalid non empty entry %s" % k)
     if len(d) > 0:
-        raise ValueError("Unknown entry(ies) %s" % d.keys())
+        raise ValueError("Unknown entry(ies) %s" % list(d.keys()))
 
     return libraries, misc

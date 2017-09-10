@@ -6,7 +6,7 @@ import struct
 import base64
 import shutil
 
-from cStringIO import StringIO
+from io import StringIO
 
 import bento
 from bento.installed_package_description \
@@ -56,7 +56,7 @@ def read_ipkg(wininst):
         fid.seek(pexe_size, 0)
         data = fid.read(uncomp_size)
 
-        from ConfigParser import ConfigParser
+        from configparser import ConfigParser
         parser = ConfigParser()
         sdata = StringIO(data)
 

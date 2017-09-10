@@ -33,7 +33,7 @@ class config(old_config):
 
         scheme = self._get_install_scheme()
         argv = []
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             if k == "exec_prefix":
                 k = "exec-prefix"
             argv.append("--%s=%s" % (k, v))

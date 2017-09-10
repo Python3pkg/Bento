@@ -180,7 +180,7 @@ Name: foo
         self.assertEqual(py_version_short, PY_VERSION_SHORT)
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v, "discrepency for path %s: %s vs %s" % (k, UNIX_REFERENCE[k], v))
 
     @mock.patch("sys.platform", "darwin")
@@ -207,7 +207,7 @@ Name: foo
         self.assertEqual(py_version_short, PY_VERSION_SHORT)
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v)
 
     @mock.patch("sys.platform", "linux2")
@@ -230,7 +230,7 @@ Name: foo
         self.assertEqual(py_version_short, PY_VERSION_SHORT)
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v)
 
         self.options.eprefix = "/home/exec/guido"
@@ -247,7 +247,7 @@ Name: foo
         self.assertEqual(py_version_short, PY_VERSION_SHORT)
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v)
 
     @mock.patch("sys.platform", "linux2")
@@ -282,7 +282,7 @@ Name: foo
         scheme.pop("py_version_short")
         scheme.pop("pkgname")
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v)
 
     @mock.patch("sys.platform", "linux2")
@@ -303,7 +303,7 @@ Name: foo
         scheme.pop("py_version_short")
         scheme.pop("pkgname")
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(UNIX_REFERENCE[k], v)
 
 class TestWin32Scheme(unittest.TestCase):
@@ -345,7 +345,7 @@ Name: foo
         self.assertEqual(py_version_short, PY_VERSION_SHORT)
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(WIN32_REFERENCE[k], v, "discrepency for path %s: %s vs %s" % (k, WIN32_REFERENCE[k], v))
 
     @mock.patch("sys.platform", "win32")
@@ -367,5 +367,5 @@ Name: foo
         self.assertEqual(eprefix, r"C:\foo")
 
         # Check that other values in scheme have not been modified
-        for k, v in scheme.items():
+        for k, v in list(scheme.items()):
             self.assertEqual(WIN32_REFERENCE[k], v, "discrepency for path %s: %s vs %s" % (k, WIN32_REFERENCE[k], v))

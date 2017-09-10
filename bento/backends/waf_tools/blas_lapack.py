@@ -146,7 +146,7 @@ def check_fortran(context):
 def add_options(global_context):
     global_context.add_option_group("configure", "blas_lapack", "blas/lapack")
 
-    available_optimized = ",".join(_LAPACK_TO_KWARGS.keys())
+    available_optimized = ",".join(list(_LAPACK_TO_KWARGS.keys()))
     global_context.add_option("configure",
             Option("--blas-lapack-type", help="Which blas lapack to use (%s)" % available_optimized),
             "blas_lapack")

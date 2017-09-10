@@ -38,7 +38,7 @@ class TestTranslation(unittest.TestCase):
             create_fake_tree(top, tree)
             extensions = subpackage.flatten_subpackage_extensions(
                     spkg, top)
-            self.failUnless("foo._hello" in extensions)
+            self.assertTrue("foo._hello" in extensions)
             extension = extensions["foo._hello"]
             self.assertEqual(extension.sources, ["foo/src/hellomodule.c"])
             self.assertEqual(extension.include_dirs, ["foo"])
@@ -52,7 +52,7 @@ class TestTranslation(unittest.TestCase):
             create_fake_tree(top, tree)
             clibs = subpackage.flatten_subpackage_compiled_libraries(
                     spkg, top)
-            self.failUnless("bar.clib" in clibs)
+            self.assertTrue("bar.clib" in clibs)
             clib = clibs["bar.clib"]
             self.assertEqual(clib.sources, sources)
             self.assertEqual(clib.include_dirs, include_dirs)

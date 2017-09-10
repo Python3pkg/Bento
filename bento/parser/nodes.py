@@ -45,7 +45,7 @@ def ast_pprint(root, cur_ind=0, ind_val=4, string=None):
 
     _ast_pprint(root, cur_ind)
     if string is None:
-        print("\n".join(_buf))
+        print(("\n".join(_buf)))
     else:
         string.write("\n".join(_buf))
 
@@ -74,7 +74,7 @@ def ast_walk(root, dispatcher, debug=False):
             return func(par)
         except KeyError:
             if debug:
-                print("no action for type %s" % par.type)
+                print(("no action for type %s" % par.type))
             return par
 
     # FIXME: we need to copy the dict because the dispatcher modify the dict in

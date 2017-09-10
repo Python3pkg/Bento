@@ -150,7 +150,7 @@ Usage:   bentomaker install [OPTIONS]."""
             # A better way would be to log install steps and display those, but
             # this will do for now.
             for kind, source, target in iter_files(node_sections):
-                print(target.abspath())
+                print((target.abspath()))
             return
 
         if o.transaction:

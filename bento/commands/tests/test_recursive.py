@@ -247,7 +247,7 @@ def configure(ctx):
 
             test = top_node.search("bar/test")
             if test:
-                self.failUnlessEqual(test.read(), "['fubar']")
+                self.assertEqual(test.read(), "['fubar']")
             else:
                 self.fail("test dummy not found")
         finally:

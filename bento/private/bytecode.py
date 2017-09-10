@@ -12,7 +12,7 @@ from py_compile \
     import \
         PyCompileError
 if sys.version_info[0] < 3:
-    from _bytecode_2 \
+    from ._bytecode_2 \
         import \
             bcompile
 else:

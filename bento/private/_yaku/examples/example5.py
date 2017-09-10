@@ -46,7 +46,7 @@ def pyext_configure(ctx, compiler_type="default"):
     else:
         compiler_type = "clang"
         dist_env = get_clang_env(ctx)
-        for name, value in dist_env.items():
+        for name, value in list(dist_env.items()):
             ctx.env["PYEXT_%s" % name] = value
         ctx.env["PYEXT_FMT"] = "%%s%s" % dist_env["SO"]
         ctx.env["PYEXT_CFLAGS"] = ctx.env["PYEXT_BASE_CFLAGS"] + \

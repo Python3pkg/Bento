@@ -2,7 +2,7 @@ import os
 import sys
 
 if sys.version_info[0] < 3:
-    from cPickle \
+    from pickle \
         import \
             load, dump, dumps
 else:
@@ -55,13 +55,13 @@ def create_top_nodes(start_dir, build_dir):
 def _hook_id_to_hook_path(hook_dict):
     # convert a hook dict indexed by id to a hook dict indexed by
     # paths (for storage)
-    return dict([(k.srcpath(), v) for k, v in hook_dict.items()])
+    return dict([(k.srcpath(), v) for k, v in list(hook_dict.items())])
 
 def _hook_path_to_hook_id(src_root, hook_dict):
     # convert a hook dict indexed by paths to a hook dict indexed by
     # id
     return dict([(src_root.find_resource(k), v) for \
-                 k, v in hook_dict.items()])
+                 k, v in list(hook_dict.items())])
 
 class ConfigureContext(object):
     def __init__(self):
@@ -100,7 +100,7 @@ class ConfigureContext(object):
         return ret
 
     def setup_tools(self):
-        for builder in self.builders.values():
+        for builder in list(self.builders.values()):
             if not builder.configured:
                builder.configure()
                self._configured[builder] = True
@@ -273,7 +273,7 @@ def get_cfg(src_path=None, build_path="build"):
         env["VERBOSE"] = True
     # Keep this as is - we do want a dictionary for 'serialization', and python
     # 3 os.environ is an object instead of a dict
-    env["ENV"] = dict([(k, v) for k, v in os.environ.items()])
+    env["ENV"] = dict([(k, v) for k, v in list(os.environ.items())])
 
     if src_path is None:
         src_path = os.getcwd()

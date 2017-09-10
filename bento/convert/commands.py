@@ -151,4 +151,4 @@ Usage:   bentomaker detect_type [OPTIONS]."""
         if verbose:
             print("Done !")
             print("=================================================================")
-        print("Detected type: %r" % monkey_patch_mode)
+        print(("Detected type: %r" % monkey_patch_mode))

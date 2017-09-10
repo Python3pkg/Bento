@@ -18,7 +18,7 @@ def _unicode(*args, **kw):
     if six.PY3:
         return str(*args, **kw)
     else:
-        return unicode(*args, **kw)
+        return str(*args, **kw)
 
 def path_requirement(SpecArgument, Level=six.u('requires'), **kw):
     return dict(

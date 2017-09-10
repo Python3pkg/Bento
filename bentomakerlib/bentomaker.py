@@ -168,7 +168,7 @@ def register_options_special(global_context):
     # (e.g. 'commands')
     context = OptionsContext()
     def print_usage():
-        print(get_usage(global_context))
+        print((get_usage(global_context)))
     context.parser.print_help = print_usage
     global_context.register_options_context_without_command("commands", context)
 
@@ -207,7 +207,7 @@ def main(argv=None):
     if hasattr(os, "getuid"):
         if os.getuid() == 0:
             pprint("RED", "Using bentomaker under root/sudo is *strongly* discouraged - do you want to continue ? y/N")
-            ans = input()
+            ans = eval(input())
             if not ans.lower() in ["y", "yes"]:
                 raise bento.errors.UsageException("bentomaker execution canceld (not using bentomaker with admin privileges)")
 
@@ -220,11 +220,11 @@ def main(argv=None):
     cmd_name = popts.cmd_name
 
     if popts.show_version:
-        print(bento.__version__)
+        print((bento.__version__))
         return
 
     if popts.show_full_version:
-        print(bento.__version__ + "git" + bento.__git_revision__)
+        print((bento.__version__ + "git" + bento.__git_revision__))
         return
 
     source_root = os.path.join(os.getcwd(), os.path.dirname(popts.bento_info))
@@ -393,7 +393,7 @@ def _main(global_context, cached_package, popts, run_node, top_node, build_node)
     cmd_argv = popts.cmd_argv
 
     if not cmd_name:
-        print("Type '%s help' for usage." % SCRIPT_NAME)
+        print(("Type '%s help' for usage." % SCRIPT_NAME))
         return 1
     else:
         if not global_context.is_command_registered(cmd_name):
@@ -406,7 +406,7 @@ def _get_package_user_flags(global_context, package_options, configure_argv):
 
     p = global_context.retrieve_options_context("configure")
     o, a = p.parser.parse_args(configure_argv)
-    flag_values = _get_flag_values(package_options.flag_options.keys(), o)
+    flag_values = _get_flag_values(list(package_options.flag_options.keys()), o)
 
     return flag_values
 

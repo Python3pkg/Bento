@@ -297,10 +297,10 @@ def whole_test(setup_py, verbose, log):
         pprint("YELLOW", "--- Testing numpy.distutils patched by setuptools ----")
     use_setuptools_numpy = test_setuptools_numpy(setup_py, show_output, log)
     if verbose:
-        print("Is distutils ? %d" % use_distutils)
-        print("Is setuptools ? %d" % use_setuptools)
-        print("Is numpy distutils ? %d" % use_numpy)
-        print("Is setuptools numpy ? %d" % use_setuptools_numpy)
+        print(("Is distutils ? %d" % use_distutils))
+        print(("Is setuptools ? %d" % use_setuptools))
+        print(("Is numpy distutils ? %d" % use_numpy))
+        print(("Is setuptools numpy ? %d" % use_setuptools_numpy))
 
     if use_distutils and not (use_setuptools or use_numpy or use_setuptools_numpy):
         return "distutils"

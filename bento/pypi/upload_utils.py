@@ -35,10 +35,9 @@ if PY3:
         import \
             Request, HTTPBasicAuthHandler, HTTPError, URLError, urlparse, urlopen
 else:
-    from urllib2 \
-        import \
-            Request, HTTPBasicAuthHandler, HTTPError, URLError, urlopen
-    from urlparse \
+    from urllib.request import Request, HTTPBasicAuthHandler, urlopen
+    from urllib.error import HTTPError, URLError
+    from urllib.parse \
         import \
             urlparse
 
@@ -80,7 +79,7 @@ def build_request(repository, post_data, auth):
         if key in post_data:
             filename_, value = post_data.pop(key)
             files.append((key, filename_, value))
-    content_type, body = encode_multipart(post_data.items(), files)
+    content_type, body = encode_multipart(list(post_data.items()), files)
 
     headers = {'Content-type': content_type,
                'Content-length': str(len(body)),

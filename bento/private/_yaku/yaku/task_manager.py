@@ -91,13 +91,13 @@ class TaskManager(object):
                 groups[h] = [t]
 
     def next_set(self):
-        keys = self.groups.keys()
+        keys = list(self.groups.keys())
 
         unconnected = []
         remainder = []
 
         for u in keys:
-            for k in self.order.values():
+            for k in list(self.order.values()):
                 if u in k:
                     remainder.append(u)
                     break
@@ -182,9 +182,9 @@ def topo_sort(task_deps):
     # XXX: cycle detection is missing
     tmp = []
     nodes = []
-    for dep in task_deps.values():
+    for dep in list(task_deps.values()):
         nodes.extend(dep)
-    nodes.extend(task_deps.keys())
+    nodes.extend(list(task_deps.keys()))
     nodes = set(nodes)
 
     visited = set()

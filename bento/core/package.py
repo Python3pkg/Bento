@@ -40,11 +40,11 @@ def _parse_libraries(libraries):
                 ret[k] = default[k]
 
         ret["extensions"] = {}
-        for k, v in default.get("extensions", {}).items():
+        for k, v in list(default.get("extensions", {}).items()):
             ret["extensions"][k] = Extension.from_parse_dict(v)
 
         ret["compiled_libraries"] = {}
-        for k, v in default.get("compiled_libraries", {}).items():
+        for k, v in list(default.get("compiled_libraries", {}).items()):
             ret["compiled_libraries"][k] = \
                     CompiledLibrary.from_parse_dict(v)
     return ret
@@ -85,13 +85,13 @@ def build_libs_from_dict(libraries_d):
 
 def build_executables_from_dict(executables_d):
     executables = {}
-    for name, executable in executables_d.items():
+    for name, executable in list(executables_d.items()):
         executables[name] = Executable.from_parse_dict(executable)
     return executables
 
 def build_data_files_from_dict(data_files_d):
     data_files = {}
-    for name, data_file_d in data_files_d.items():
+    for name, data_file_d in list(data_files_d.items()):
         data_files[name] = DataFiles.from_parse_dict(data_file_d)
     return data_files
 
@@ -268,7 +268,7 @@ class PackageDescription:
             pkgs.append(p)
         for p in self.py_modules:
             pkgs.append(p)
-        for p in self.extensions.values():
+        for p in list(self.extensions.values()):
             pkgs.append(p.name)
         top_levels = [i for i in pkgs if not "." in i]
 
@@ -353,7 +353,7 @@ def static_representation(pkg, options={}):
         r.append('')
 
     if pkg.data_files:
-        for section in pkg.data_files.values():
+        for section in list(pkg.data_files.values()):
             r.append("DataFiles: %s" % section.name)
             r.append(' ' * indent_level + "SourceDir: %s" % section.source_dir)
             r.append(' ' * indent_level + "TargetDir: %s" % section.target_dir)
@@ -372,14 +372,14 @@ def static_representation(pkg, options={}):
             indented_list("Packages", pkg.packages, 2)
 
         if pkg.extensions:
-            for name, ext in pkg.extensions.items():
+            for name, ext in list(pkg.extensions.items()):
                 r.append(' ' * indent_level + "Extension: %s" % name)
                 indented_list("Sources", ext.sources, 3)
                 if ext.include_dirs:
                     indented_list("IncludeDirs", ext.include_dirs, 3)
         r.append("")
 
-    for name, value in pkg.executables.items():
+    for name, value in list(pkg.executables.items()):
         r.append("Executable: %s" % name)
         r.append(' ' * indent_level + "Module: %s" % value.module)
         r.append(' ' * indent_level + "Function: %s" % value.function)

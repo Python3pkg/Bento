@@ -147,7 +147,7 @@ def comparable_installed_sections(sections):
 
     def proxy_categories(sections):
         for category in sections:
-            for section_name, section in sections[category].items():
+            for section_name, section in list(sections[category].items()):
                 sections[category ][section_name] = _InstalledSectionProxy(section)
         return sections
 

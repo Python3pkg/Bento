@@ -103,7 +103,7 @@ def get_script_header(executable=SYS_EXECUTABLE, wininst=False):
 def create_scripts(executables, bdir):
     ret = {}
 
-    for name, executable in executables.items():
+    for name, executable in list(executables.items()):
         if sys.platform == "win32":
             ret[name] = create_win32_script(name, executable, bdir)
         else:

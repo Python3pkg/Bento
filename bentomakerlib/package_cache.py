@@ -28,7 +28,7 @@ import bento.utils.path
 import bento.utils.io2
 
 if sys.version_info[0] < 3:
-    import cPickle as pickle
+    import pickle as pickle
 else:
     import pickle
 
@@ -198,7 +198,7 @@ def _create_objects_no_cached(bento_info, user_flags, db):
         options = _raw_to_options(raw)
 
         checksums = [md5(open(f, "rb").read()).hexdigest() for f in files]
-        db["bentos_checksums"] = pickle.dumps(dict(zip(files, checksums)))
+        db["bentos_checksums"] = pickle.dumps(dict(list(zip(files, checksums))))
         db["package_description"] = pickle.dumps(pkg)
         db["user_flags"] = pickle.dumps(user_flags)
         db["parsed_dict"] = pickle.dumps(raw)

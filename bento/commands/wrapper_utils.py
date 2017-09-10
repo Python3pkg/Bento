@@ -80,7 +80,7 @@ def run_command_in_context(context, cmd, pre_hooks=None, post_hooks=None):
 def set_main(pkg, top_node, build_node):
     modules = []
     hook_files = pkg.hook_files
-    for name, spkg in pkg.subpackages.items():
+    for name, spkg in list(pkg.subpackages.items()):
         hook_files.extend([os.path.join(spkg.rdir, h) for h in spkg.hook_files])
 
     # TODO: find doublons

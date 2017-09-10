@@ -18,10 +18,10 @@ if PY3:
         import \
             HTTPPasswordMgr, urlparse
 else:
-    from urllib2 \
+    from urllib.request \
         import \
             HTTPPasswordMgr
-    from urlparse \
+    from urllib.parse \
         import \
             urlparse
 

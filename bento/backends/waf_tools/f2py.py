@@ -11,7 +11,7 @@ from waflib.TaskGen \
     import \
         extension, feature, before_method, after_method
 
-from interface_gen \
+from .interface_gen \
     import \
         generate_interface
 

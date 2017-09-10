@@ -1,7 +1,7 @@
 import os
 import re
 import subprocess
-import _winreg
+import winreg
 
 import yaku.task
 from yaku.tools.mscommon.common \
@@ -113,7 +113,7 @@ def msvc_version_to_maj_min(msvc_version):
        maj = int(t[0])
        min = int(t[1])
        return maj, min
-   except ValueError, e:
+   except ValueError as e:
        raise ValueError("Unrecognized version %s (%s)" % (msvc_version,msvc_version_numeric))
 
 def is_host_target_supported(host_target, msvc_version):
@@ -149,7 +149,7 @@ def find_vc_pdir(msvc_version):
     ----
     If for some reason the requested version could not be found, an
     exception which inherits from VisualCException will be raised."""
-    base = _winreg.HKEY_LOCAL_MACHINE
+    base = winreg.HKEY_LOCAL_MACHINE
     root = 'Software\\'
     if is_win64():
         root = root + 'Wow6432Node\\'
@@ -170,7 +170,7 @@ def find_vc_pdir(msvc_version):
     return None
 
 def find_versions(abi):
-    base = _winreg.HKEY_LOCAL_MACHINE
+    base = winreg.HKEY_LOCAL_MACHINE
     key = os.path.join(_FC_ROOT[abi], "Fortran")
 
     availables = {}
@@ -181,9 +181,9 @@ def find_versions(abi):
         verk = os.path.join(key, v)
         key = open_key(verk)
         try:
-            maj = _winreg.QueryValueEx(key, "Major Version")[0]
-            min = _winreg.QueryValueEx(key, "Minor Version")[0]
-            bld = _winreg.QueryValueEx(key, "Revision")[0]
+            maj = winreg.QueryValueEx(key, "Major Version")[0]
+            min = winreg.QueryValueEx(key, "Minor Version")[0]
+            bld = winreg.QueryValueEx(key, "Revision")[0]
             availables[(maj, min, bld)] = verk
         finally:
             close_key(key)
@@ -286,7 +286,7 @@ def setup(ctx):
     ctx.env["SHAREDLIB_FMT"] = "%s.dll"
     ctx.env["PROGRAM_FMT"] = "%s.exe"
 
-    for k, v in vc_paths.items():
+    for k, v in list(vc_paths.items()):
         k = k.encode("ascii")
         if k in ["LIB"]:
             env.extend("LIBDIR", v, create=True)

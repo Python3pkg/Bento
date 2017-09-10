@@ -151,7 +151,7 @@ class _TestBuildSimpleExtension(object):
         conf, configure, bld, build = self._run_configure_and_build({"bento.info": BENTO_INFO_WITH_EXT})
 
         sections = bld.section_writer.sections["extensions"]
-        for extension in conf.pkg.extensions.values():
+        for extension in list(conf.pkg.extensions.values()):
             isection = self._resolve_isection(bld.run_node, sections[extension.name])
             self.assertTrue(os.path.exists(os.path.join(isection.source_dir, isection.files[0][0])))
 
@@ -196,8 +196,8 @@ Library:
         run_command_in_context(bld, build, pre_hooks=[pre_hook])
 
         sections = bld.section_writer.sections["extensions"]
-        self.failUnless(len(sections) == 2)
-        self.failUnless(len(sections["_bar"].files) == 0)
+        self.assertTrue(len(sections) == 2)
+        self.assertTrue(len(sections["_bar"].files) == 0)
 
     def test_extension_tweak(self):
         bento_info = """\
@@ -231,12 +231,12 @@ Library:
             bld.default_builder = old_default_builder
 
         sections = bld.section_writer.sections["extensions"]
-        self.failUnless(len(sections) == 2)
+        self.assertTrue(len(sections) == 2)
 
     def test_simple_library(self):
         conf, configure, bld, build = self._run_configure_and_build({"bento.info": BENTO_INFO_WITH_CLIB})
         sections = bld.section_writer.sections["compiled_libraries"]
-        for library in conf.pkg.compiled_libraries.values():
+        for library in list(conf.pkg.compiled_libraries.values()):
             isection = self._resolve_isection(bld.run_node, sections[library.name])
             self.assertTrue(os.path.exists(os.path.join(isection.source_dir, isection.files[0][0])))
 
@@ -244,7 +244,7 @@ Library:
         _, _, bld, build = self._run_configure_and_build({"bento.info": BENTO_INFO_WITH_EXT}, build_argv=["-i"])
         sections = bld.section_writer.sections["extensions"]
         source_dir = bld.top_node.abspath()
-        for section in sections.values():
+        for section in list(sections.values()):
             isection = self._resolve_isection(bld.run_node, section)
             for f in isection.files[0]:
                 self.assertTrue(op.exists(op.join(source_dir, f)))

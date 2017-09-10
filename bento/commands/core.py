@@ -49,7 +49,7 @@ Usage:   bentomaker help [TOPIC] or bentomaker help [COMMAND]."""
             p.print_help()
             return
         if len(a) < 1:
-            print(get_simple_usage(ctx))
+            print((get_simple_usage(ctx)))
             return
 
         # Parse the options for help command itself

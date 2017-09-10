@@ -13,7 +13,7 @@ from bento.utils.utils import \
 
 _PKG_TO_DIST = {
         "ext_modules": lambda pkg: [v for v  in \
-                                    pkg.extensions.values()],
+                                    list(pkg.extensions.values())],
         "platforms": lambda pkg: [v for v  in pkg.platforms],
         "packages": lambda pkg: [v for v  in pkg.packages],
         "py_modules": lambda pkg: [v for v  in pkg.py_modules],
@@ -41,7 +41,7 @@ def pkg_to_distutils_meta(pkg):
     """Obtain meta data information from pkg into a dictionary which may be
     used directly as an argument for setup function in distutils."""
     d = {}
-    for k, v in _META_PKG_TO_DIST.items():
+    for k, v in list(_META_PKG_TO_DIST.items()):
         d[k] = v(pkg)
     return d
 
@@ -57,7 +57,7 @@ def pkg_to_distutils(pkg):
     as argument to distutils/setuptools setup function."""
     d = {}
 
-    for k, v in _PKG_TO_DIST.items():
+    for k, v in list(_PKG_TO_DIST.items()):
         d[k] = v(pkg)
 
     return d

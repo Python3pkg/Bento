@@ -33,10 +33,9 @@ if PY3:
             HTTPPasswordMgr, urlparse, HTTPError, URLError
     _OPENER_DIRECTOR = "urllib.request.OpenerDirector"
 else:
-    from urllib2 \
-        import \
-            Request, HTTPPasswordMgr, HTTPError, URLError
-    from urlparse \
+    from urllib.request import Request, HTTPPasswordMgr
+    from urllib.error import HTTPError, URLError
+    from urllib.parse \
         import \
             urlparse
     _OPENER_DIRECTOR = "urllib2.OpenerDirector"
@@ -80,7 +79,7 @@ Author: John Doe
 """
         package = PackageDescription.from_string(bento_info)
         post_data = build_post_data(package, "submit")
-        content_type, body = encode_multipart(post_data.items(), [])
+        content_type, body = encode_multipart(list(post_data.items()), [])
         self.assertEqual(r_content, body)
 
     @mock.patch(_OPENER_DIRECTOR, mock.MagicMock())

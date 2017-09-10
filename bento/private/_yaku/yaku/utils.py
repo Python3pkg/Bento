@@ -107,7 +107,7 @@ def find_program(program, path_list=None):
 if sys.version_info[0] < 3:
     from yaku._utils_py2 import join_bytes, function_code
     def is_string(s):
-        return isinstance(s, basestring)
+        return isinstance(s, str)
 else:
     from yaku._utils_py3 import join_bytes, function_code
     def is_string(s):

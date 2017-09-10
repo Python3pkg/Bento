@@ -8,7 +8,7 @@ import re
 import sys
 import glob
 import optparse
-import StringIO
+import io
 from hashlib import md5
 
 import os.path as op
@@ -34,15 +34,15 @@ def sfilter(path):
     #if path.endswith('Options.py') or path.endswith('Scripting.py'):
     #   cnt = cnt.replace('Utils.python_24_guard()', '')
 
-    return (StringIO.StringIO(cnt), len(cnt), cnt)
+    return (io.StringIO(cnt), len(cnt), cnt)
 
 def translate_entry_point(s):
     module, func = s.split(":", 1)
     return "import %s\n%s.%s()" % (module, module, func)
 
 def read_config():
-    import ConfigParser
-    s = ConfigParser.ConfigParser()
+    import configparser
+    s = configparser.ConfigParser()
     s.read("config.ini")
 
     def _parse_comma_list(s_list):
@@ -57,11 +57,11 @@ def read_config():
     ret["script_entry_point"] = translate_entry_point(s.get(section, "entry_point"))
     try:
         ret["include_exe"] = s.getboolean(section, "include_exe")
-    except ConfigParser.NoOptionError:
+    except configparser.NoOptionError:
         ret["include_exe"] = False
     try:
         ret["include_waf"] = s.getboolean(section, "include_waf")
-    except ConfigParser.NoOptionError:
+    except configparser.NoOptionError:
         ret["include_waf"] = False
 
     ret["extra_files"] = []
@@ -79,11 +79,11 @@ def create_script_light(tpl, variables):
     try:
         cnt = f.read()
         r = {}
-        for k, v in variables.items():
+        for k, v in list(variables.items()):
             r[k] = re.compile("@%s@" % k)
         lines = []
         for line in cnt.splitlines():
-            for k, v in variables.items():
+            for k, v in list(variables.items()):
                 v_lines = v.splitlines()
                 if len(v_lines) > 1:
                     m = r[k].search(line)
@@ -101,7 +101,7 @@ def create_script(config):
 
     script_name = config["script_name"]
     extra_files = config["extra_files"]
-    print("Creating self-contained script %r in %s" % (script_name, os.getcwd()))
+    print(("Creating self-contained script %r in %s" % (script_name, os.getcwd())))
     mw = "tmp-foo-" + VERSION
 
     zip_type = "bz2"

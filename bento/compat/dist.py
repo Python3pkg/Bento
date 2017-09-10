@@ -98,7 +98,7 @@ class _DistributionMetadata:
     def _encode_field(self, value):
         if value is None:
             return None
-        if isinstance(value, unicode):
+        if isinstance(value, str):
             return value.encode(PKG_INFO_ENCODING)
         return str(value)
 

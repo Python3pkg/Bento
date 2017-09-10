@@ -176,7 +176,7 @@ class BentoDistribution(Distribution):
         if hasattr(self, "entry_points"):
             if self.entry_points is None:
                 self.entry_points = {}
-            console_scripts = [e.full_representation() for e in self.pkg.executables.values()]
+            console_scripts = [e.full_representation() for e in list(self.pkg.executables.values())]
             if "console_scripts" in self.entry_points:
                 self.entry_points["console_scripts"].extend(console_scripts)
             else:

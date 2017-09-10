@@ -80,7 +80,7 @@ def _simple_subst_vars(s, local_vars):
         
     def _resolve(d):
         ret = {}
-        for k, v in d.items():
+        for k, v in list(d.items()):
             ret[k] = re.sub("\%s(%s)" % (_DELIM, _IDPATTERN), _subst, v)
         return ret
 
@@ -225,7 +225,7 @@ def to_camel_case(s):
 def fix_kw(kw):
     """Make sure the given dictionary may be used as a kw dict independently on
     the python version and encoding of kw's keys."""
-    return dict([(str(k), v) for k, v in kw.items()])
+    return dict([(str(k), v) for k, v in list(kw.items())])
 
 def cmd_is_runnable(cmd, **kw):
     """Test whether the given command can work.
@@ -277,7 +277,7 @@ def explode_path(path):
 
 if sys.version_info[0] < 3:
     def is_string(s):
-        return isinstance(s, str) or isinstance(s, unicode)
+        return isinstance(s, str) or isinstance(s, str)
 else:
     def is_string(s):
         return isinstance(s, str)

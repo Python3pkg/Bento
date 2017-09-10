@@ -48,7 +48,7 @@ class TestParseError(unittest.TestCase):
 NName: foo
 """
         error_msg = "Unrecognized keyword: 'NName'"
-        self.assertRaisesRegexp(ParseError, error_msg, lambda : PackageDescription.from_string(text))
+        self.assertRaisesRegex(ParseError, error_msg, lambda : PackageDescription.from_string(text))
 
     def test_simple_filename(self):
         f = self.f
@@ -83,7 +83,7 @@ DataFiles: data
 """
         r_data = DataFiles("data", files=["foo.data"], target_dir="$datadir")
         pkg = PackageDescription.from_string(text)
-        self.failUnless("data" in pkg.data_files)
+        self.assertTrue("data" in pkg.data_files)
         self.assertEqual(pkg.data_files["data"].__dict__, r_data.__dict__)
     
 class TestOptions(unittest.TestCase):
@@ -99,15 +99,15 @@ Path: foo
     Default: /usr/lib
 """
     def _test_simple(self, opts):
-        self.failUnless(opts.name, "foo")
+        self.assertTrue(opts.name, "foo")
 
         flag = FlagOption("flag1", "false", "flag1 description")
-        self.failUnless(opts.flag_options.keys(), ["flags"])
-        self.failUnless(opts.flag_options["flag1"], flag.__dict__)
+        self.assertTrue(list(opts.flag_options.keys()), ["flags"])
+        self.assertTrue(opts.flag_options["flag1"], flag.__dict__)
 
         path = PathOption("foo", "/usr/lib", "foo description")
-        self.failUnless(opts.path_options.keys(), ["foo"])
-        self.failUnless(opts.path_options["foo"], path.__dict__)
+        self.assertTrue(list(opts.path_options.keys()), ["foo"])
+        self.assertTrue(opts.path_options["foo"], path.__dict__)
 
     def test_simple_from_string(self):
         s = self.simple_text

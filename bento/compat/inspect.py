@@ -31,7 +31,7 @@ def isclass(object):
         __doc__         documentation string
         __module__      name of module in which this class was defined"""
     if sys.version_info[0] < 3:
-        return isinstance(object, types.ClassType) or hasattr(object, '__bases__')
+        return isinstance(object, type) or hasattr(object, '__bases__')
     else:
         return isinstance(object, type) or hasattr(object, '__bases__')
 
@@ -178,11 +178,11 @@ def getargspec(func):
     """
 
     if ismethod(func):
-        func = func.im_func
+        func = func.__func__
     if not isfunction(func):
         raise TypeError('arg is not a Python function')
-    args, varargs, varkw = getargs(func.func_code)
-    return args, varargs, varkw, func.func_defaults
+    args, varargs, varkw = getargs(func.__code__)
+    return args, varargs, varkw, func.__defaults__
 
 def getargvalues(frame):
     """Get information about arguments passed into a particular frame.
@@ -202,8 +202,8 @@ def joinseq(seq):
 
 def strseq(object, convert, join=joinseq):
     """Recursively walk a sequence, stringifying each element."""
-    if type(object) in [types.ListType, types.TupleType]:
-        return join(map(lambda o, c=convert, j=join: strseq(o, c, j), object))
+    if type(object) in [list, tuple]:
+        return join(list(map(lambda o, c=convert, j=join: strseq(o, c, j), object)))
     else:
         return convert(object)
 
@@ -273,7 +273,7 @@ def getdoc(object):
         doc = object.__doc__
     except AttributeError:
         return None
-    if not isinstance(doc, types.StringTypes):
+    if not isinstance(doc, (str,)):
         return None
     try:
         lines = string.split(string.expandtabs(doc), '\n')
@@ -281,7 +281,7 @@ def getdoc(object):
         return None
     else:
         # Find minimum indentation of any non-blank lines after first line.
-        margin = sys.maxint
+        margin = sys.maxsize
         for line in lines[1:]:
             content = len(string.lstrip(line))
             if content:
@@ -290,7 +290,7 @@ def getdoc(object):
         # Remove indentation.
         if lines:
             lines[0] = lines[0].lstrip()
-        if margin < sys.maxint:
+        if margin < sys.maxsize:
             for i in range(1, len(lines)): lines[i] = lines[i][margin:]
         # Remove any trailing or leading blank lines.
         while lines and not lines[-1]:
@@ -311,9 +311,9 @@ def getfile(object):
             return object.__file__
         raise TypeError('arg is a built-in class')
     if ismethod(object):
-        object = object.im_func
+        object = object.__func__
     if isfunction(object):
-        object = object.func_code
+        object = object.__code__
     if istraceback(object):
         object = object.tb_frame
     if isframe(object):
@@ -347,9 +347,9 @@ def findsource(object):
             raise IOError('could not find class definition')
 
     if ismethod(object):
-        object = object.im_func
+        object = object.__func__
     if isfunction(object):
-        object = object.func_code
+        object = object.__code__
     if istraceback(object):
         object = object.tb_frame
     if isframe(object):
@@ -370,7 +370,7 @@ def getmoduleinfo(path):
     filename = os.path.basename(path)
     def _f(suffix, mode, mtype):
        return (-len(suffix), suffix, mode, mtype)
-    suffixes = map(_f, imp.get_suffixes())
+    suffixes = list(map(_f, imp.get_suffixes()))
     suffixes.sort() # try longest suffixes first, in case they overlap
     for neglen, suffix, mode, mtype in suffixes:
         if filename[neglen:] == suffix:
@@ -461,15 +461,15 @@ def stack(context=1):
     return getouterframes(sys._getframe(1), context)
 
 if __name__ == '__main__':
-    import inspect
+    from . import inspect
     def foo(x, y, z=None):
         return None
 
-    print(inspect.getargs(foo.func_code))
-    print(getargs(foo.func_code))
+    print((inspect.getargs(foo.__code__)))
+    print((getargs(foo.__code__)))
 
-    print(inspect.getargspec(foo))
-    print(getargspec(foo))
+    print((inspect.getargspec(foo)))
+    print((getargspec(foo)))
 
-    print(inspect.formatargspec(*inspect.getargspec(foo)))
-    print(formatargspec(*getargspec(foo)))
+    print((inspect.formatargspec(*inspect.getargspec(foo))))
+    print((formatargspec(*getargspec(foo))))

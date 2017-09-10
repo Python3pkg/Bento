@@ -82,7 +82,7 @@ keyword_misc = dict([
         ('flag', 'FLAG_OP'),
         ('os', 'OS_OP'),
 ])
-keyword_misc_tokens = keyword_misc.values()
+keyword_misc_tokens = list(keyword_misc.values())
 
 tokens = ["COLON", "WS", "WORD", "NEWLINE", "STRING", "MULTILINES_STRING",
           "BLOCK_MULTILINES_STRING", "COMMA", "INDENT", "DEDENT", "LPAR",

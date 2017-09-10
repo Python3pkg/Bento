@@ -1,7 +1,7 @@
 import sys
 import os
 if sys.platform == "win32":
-    import _winreg
+    import winreg
 
 import yaku.utils
 import yaku.task
@@ -23,7 +23,7 @@ _FC_ROOT = {"amd64": r"Software\Wow6432Node\Intel\Compilers",
 _ABI2BATABI = {"amd64": "intel64", "ia32": "ia32"}
 
 def find_versions_fc(abi):
-    base = _winreg.HKEY_LOCAL_MACHINE
+    base = winreg.HKEY_LOCAL_MACHINE
     key = os.path.join(_FC_ROOT[abi], "Fortran")
 
     availables = {}
@@ -34,9 +34,9 @@ def find_versions_fc(abi):
         verk = os.path.join(key, v)
         key = open_key(verk)
         try:
-            maj = _winreg.QueryValueEx(key, "Major Version")[0]
-            min = _winreg.QueryValueEx(key, "Minor Version")[0]
-            bld = _winreg.QueryValueEx(key, "Revision")[0]
+            maj = winreg.QueryValueEx(key, "Major Version")[0]
+            min = winreg.QueryValueEx(key, "Minor Version")[0]
+            bld = winreg.QueryValueEx(key, "Revision")[0]
             availables[(maj, min, bld)] = verk
         finally:
             close_key(key)
@@ -45,7 +45,7 @@ def find_versions_fc(abi):
 def product_dir_fc(root):
     k = open_key(root)
     try:
-        return _winreg.QueryValueEx(k, "ProductDir")[0]
+        return winreg.QueryValueEx(k, "ProductDir")[0]
     finally:
         close_key(k)
 
@@ -84,7 +84,7 @@ def setup(ctx):
         batfile = os.path.join(pdir, "bin", "ifortvars.bat")
 
         d = get_output(ctx, batfile, _ABI2BATABI[abi])
-        for k, v in d.items():
+        for k, v in list(d.items()):
             if k in ["LIB"]:
                 ctx.env.extend("LIBDIR", v, create=True)
             elif k in ["INCLUDE"]:

@@ -92,13 +92,13 @@ def create_fake_package_from_bento_info(top_node, bento_info):
     _kw, files = raw_to_pkg_kw(d, {}, None)
     kw = {}
     if "extensions" in _kw:
-        kw["extensions"] = _kw["extensions"].values()
+        kw["extensions"] = list(_kw["extensions"].values())
     if "py_modules" in _kw:
         kw["modules"] = _kw["py_modules"]
     if "packages" in _kw:
         kw["packages"] = _kw["packages"]
     if "compiled_libraries" in _kw:
-        kw["compiled_libraries"] = _kw["compiled_libraries"].values()
+        kw["compiled_libraries"] = list(_kw["compiled_libraries"].values())
     if "extra_source_files" in _kw:
         kw["extra_source_files"] = _kw["extra_source_files"]
     if "sub_directory" in _kw:
@@ -110,11 +110,11 @@ def create_fake_package_from_bento_info(top_node, bento_info):
 def create_fake_package_from_bento_infos(top_node, bento_infos, bscripts=None):
     if bscripts is None:
         bscripts = {}
-    for loc, content in bento_infos.items():
+    for loc, content in list(bento_infos.items()):
         n = top_node.make_node(loc)
         n.parent.mkdir()
         n.write(content)
-    for loc, content in bscripts.items():
+    for loc, content in list(bscripts.items()):
         n = top_node.make_node(loc)
         n.parent.mkdir()
         n.write(content)
@@ -138,7 +138,7 @@ def create_fake_package_from_bento_infos(top_node, bento_infos, bscripts=None):
         extra_source_files = []
 
     packages = _kw.get("packages", [])
-    for name, spkg in subpackages.items():
+    for name, spkg in list(subpackages.items()):
         n = top_node.search(name)
         n.write(bento_infos[name])
         d = n.parent
@@ -211,7 +211,7 @@ def create_fake_package(top_node, packages=None, modules=None, extensions=None, 
             n = top_or_lib_node.make_node(f)
             n.write("")
 
-    for section in data_files.values():
+    for section in list(data_files.values()):
         source_dir_node = top_or_lib_node.make_node(section.source_dir)
         source_dir_node.mkdir()
         for f in section.files:
@@ -227,7 +227,7 @@ def flatten_extensions(top_node, subpackage):
 
     d = top_node.find_dir(subpackage.rdir)
     root_name = ".".join(subpackage.rdir.split("/"))
-    for extension in subpackage.extensions.values():
+    for extension in list(subpackage.extensions.values()):
         sources = [d.make_node(s).path_from(top_node) for s in extension.sources]
         full_name = root_name + ".%s" % extension.name
         ret.append(Extension(full_name, sources))
@@ -238,7 +238,7 @@ def flatten_compiled_libraries(top_node, subpackage):
 
     d = top_node.find_dir(subpackage.rdir)
     root_name = ".".join(subpackage.rdir.split("/"))
-    for library in subpackage.compiled_libraries.values():
+    for library in list(subpackage.compiled_libraries.values()):
         sources = [d.make_node(s).path_from(top_node) for s in library.sources]
         full_name = root_name + ".%s" % library.name
         ret.append(CompiledLibrary(full_name, sources))

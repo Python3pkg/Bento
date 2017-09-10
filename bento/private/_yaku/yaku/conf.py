@@ -8,7 +8,7 @@ except ImportError:
     from md5 import md5
 
 if sys.version_info[0] < 3:
-    from cStringIO \
+    from io \
         import \
             StringIO
 else:

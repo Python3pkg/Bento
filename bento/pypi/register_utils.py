@@ -24,9 +24,8 @@ if PY3:
         import \
             Request, HTTPBasicAuthHandler, HTTPError, URLError, build_opener
 else:
-    from urllib2 \
-        import \
-            Request, HTTPBasicAuthHandler, HTTPError, URLError, build_opener
+    from urllib.request import Request, HTTPBasicAuthHandler, build_opener
+    from urllib.error import HTTPError, URLError
 
 DEFAULT_REPOSITORY = 'http://pypi.python.org/pypi'
 DEFAULT_REALM = 'pypi'
@@ -229,7 +228,7 @@ def post_to_server(post_data, config, auth=None):
     msg: str
         Message received back from the server
     """
-    content_type, body = encode_multipart(post_data.items(), [])
+    content_type, body = encode_multipart(list(post_data.items()), [])
 
     # build the Request
     headers = {

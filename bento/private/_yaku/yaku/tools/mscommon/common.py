@@ -1,13 +1,13 @@
 import os
 import re
 import subprocess
-import _winreg
+import winreg
 
 def open_key(path):
-    return _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, path)
+    return winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
 
 def close_key(k):
-    return _winreg.CloseKey(k)
+    return winreg.CloseKey(k)
 
 def get_output(conf, vcbat, args=None):
     """Parse the output of given bat file, with given args."""
@@ -29,14 +29,14 @@ echo INCLUDE=%%INCLUDE%%
     (out, err) = p.communicate()
     for line in out.splitlines():
         if re.match("^Error", line):
-            print "Error: %r" % line
+            print("Error: %r" % line)
             raise RuntimeError("Error while executing bat script: %r" % out)
 
     res = {"PATH": re.compile("^PATH=(.+)$"),
         "INCLUDE": re.compile("^INCLUDE=(.+)$"),
         "LIB": re.compile("^LIB=(.+)$")}
     ret = {}
-    for name, r in res.items():
+    for name, r in list(res.items()):
         for line in out.splitlines():
             m = r.match(line)
             if m:
@@ -49,15 +49,15 @@ echo INCLUDE=%%INCLUDE%%
 def read_keys(base, key):
     """Return list of registry keys."""
     try:
-        handle = _winreg.OpenKeyEx(base, key)
-    except _winreg.error:
+        handle = winreg.OpenKeyEx(base, key)
+    except winreg.error:
         return None
     L = []
     i = 0
     while True:
         try:
-            k = _winreg.EnumKey(handle, i)
-        except _winreg.error:
+            k = winreg.EnumKey(handle, i)
+        except winreg.error:
             break
         L.append(k)
         i += 1
@@ -65,32 +65,32 @@ def read_keys(base, key):
 
 def read_values(base, key):
     try:
-        handle = _winreg.OpenKeyEx(base, key)
-    except _winreg.error:
+        handle = winreg.OpenKeyEx(base, key)
+    except winreg.error:
         return None
 
     d = {}
     i = 0
     while True:
         try:
-            name, value, type = _winreg.EnumValue(handle, i)
-        except _winreg.error, e:
+            name, value, type = winreg.EnumValue(handle, i)
+        except winreg.error as e:
             break
         d[convert_mbcs(name)] = convert_mbcs(value)
         i += 1
     return d
 
-def read_value(key, root=_winreg.HKEY_LOCAL_MACHINE):
+def read_value(key, root=winreg.HKEY_LOCAL_MACHINE):
     base = os.path.dirname(key)
     val = os.path.basename(key)
     try:
-        handle = _winreg.OpenKeyEx(root, base)
+        handle = winreg.OpenKeyEx(root, base)
         try:
-            value, type = _winreg.QueryValueEx(handle, val)
+            value, type = winreg.QueryValueEx(handle, val)
             return value
         finally:
-            _winreg.CloseKey(handle)
-    except _winreg.error:
+            winreg.CloseKey(handle)
+    except winreg.error:
         return None
 
 def convert_mbcs(s):

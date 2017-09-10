@@ -14,7 +14,7 @@ def all_subroutines(interface_in):
     subroutine_list = subroutine_exp.findall(interface)
     function_list = function_exp.findall(interface)
     subroutine_list = subroutine_list + function_list
-    subroutine_list = map(lambda x: x.strip(),subroutine_list)
+    subroutine_list = [x.strip() for x in subroutine_list]
     return subroutine_list
 
 def real_convert(val_string):
@@ -103,10 +103,10 @@ def generic_expand(generic_interface,skip_names=[]):
             m = routine_name.match(function_def)
             if m:
                 if m.group('name') in skip_names:
-                    print 'Skipping',m.group('name')
+                    print('Skipping',m.group('name'))
                     continue
             else:
-                print 'Possible bug: Failed to determine routines name'
+                print('Possible bug: Failed to determine routines name')
             interface = interface + '\n\n' + function_def
 
     return interface

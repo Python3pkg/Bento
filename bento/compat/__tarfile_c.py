@@ -21,7 +21,7 @@ class TarFile(tarfile.TarFile):
                 # Extract directories with a safe mode.
                 directories.append(tarinfo)
                 tarinfo = copy.copy(tarinfo)
-                tarinfo.mode = 0700
+                tarinfo.mode = 0o700
             self.extract(tarinfo, path)
 
         # Reverse sort directories.
@@ -35,7 +35,7 @@ class TarFile(tarfile.TarFile):
                 self.chown(tarinfo, dirpath)
                 self.utime(tarinfo, dirpath)
                 self.chmod(tarinfo, dirpath)
-            except ExtractError, e:
+            except ExtractError as e:
                 if self.errorlevel > 1:
                     raise
                 else:

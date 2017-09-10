@@ -28,10 +28,10 @@ class CommandRegistry(object):
         return name in self._klasses
 
     def command_names(self):
-        return self._klasses.keys()
+        return list(self._klasses.keys())
 
     def public_command_names(self):
-        return [k for k in self._klasses.keys() if not k in self._privates]
+        return [k for k in list(self._klasses.keys()) if not k in self._privates]
 
 class ContextRegistry(object):
     def __init__(self, default=None):
@@ -154,7 +154,7 @@ class OutputRegistry(object):
         if not category in self.categories:
             raise ValueError("Unknown category %r" % category)
         else:
-            for k, v in self.categories[category].items():
+            for k, v in list(self.categories[category].items()):
                 yield k, v[0], v[1], v[2]
 
     def iter_over_category(self):

@@ -122,7 +122,7 @@ def get_scheme(platform):
         raise ValueError("Platform %s not yet supported" % platform)
 
     scheme_opts = {}
-    for k, v in schemes_opts.items():
+    for k, v in list(schemes_opts.items()):
         val = schemes_opts[k].copy()
         val['help'] = val['help'] % scheme[k]
         scheme_opts[k] = val

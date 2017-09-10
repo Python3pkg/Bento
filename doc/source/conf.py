@@ -38,8 +38,8 @@ source_suffix = '.rst'
 master_doc = 'contents'
 
 # General information about the project.
-project = u'Bento'
-copyright = u'2009-2011, David Cournapeau'
+project = 'Bento'
+copyright = '2009-2011, David Cournapeau'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -180,8 +180,8 @@ htmlhelp_basename = 'Bentodoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Bento.tex', u'Bento Documentation',
-   u'David Cournapeau', 'manual'),
+  ('index', 'Bento.tex', 'Bento Documentation',
+   'David Cournapeau', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

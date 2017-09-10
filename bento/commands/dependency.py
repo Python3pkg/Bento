@@ -12,7 +12,7 @@ def _invert_dependencies(deps):
     """Given a dictionary of edge -> dependencies representing a DAG, "invert"
     all the dependencies."""
     ideps = {}
-    for k, v in deps.items():
+    for k, v in list(deps.items()):
         for d in v:
             l = ideps.get(d, None)
             if l:
@@ -59,7 +59,7 @@ class CommandScheduler(object):
                 stack_visited[n] = None
             if not n in visited:
                 visited[n] = None
-                for m, v in after.items():
+                for m, v in list(after.items()):
                     if n in v:
                         _visit(m, stack_visited)
                 out.append(n)

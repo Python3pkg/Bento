@@ -30,9 +30,8 @@ if PY3:
         import \
             HTTPPasswordMgr, urlparse, HTTPError, URLError
 else:
-    from urllib2 \
-        import \
-            Request, urlparse, HTTPError, URLError
+    from urllib.request import Request
+    from urllib.error import HTTPError, URLError
 
 # FIXME: there has to be a simpler way to do this
 class MockedResult(object):

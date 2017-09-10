@@ -78,7 +78,7 @@ class TestIterFiles(unittest.TestCase):
 
         self.meta, self.sections, nodes = create_simple_build_manifest_args(self.top_node)
         for n in nodes:
-            print(n.abspath())
+            print((n.abspath()))
 
     def tearDown(self):
         shutil.rmtree(self.top_node.abspath())

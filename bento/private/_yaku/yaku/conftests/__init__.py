@@ -2,7 +2,7 @@ import sys
 import re
 
 if sys.version_info[0] < 3:
-    from cStringIO \
+    from io \
         import \
             StringIO
 else:

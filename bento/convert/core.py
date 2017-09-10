@@ -167,7 +167,7 @@ def monkey_patch(top_node, type, filename):
                 raise ConvertionError("setup call with package_dir=%r argument is not supported !" \
                                       % package_dir)
             elif len(keys) == 1:
-                if package_dir.values()[0] != '':
+                if list(package_dir.values())[0] != '':
                     raise ConvertionError("setup call with package_dir=%r argument is not supported !" \
                                           % package_dir)
 
@@ -274,7 +274,7 @@ def build_pkg(dist, package_objects, top_node):
     pkg = distutils_to_package_description(dist)
     modules = []
     for m in pkg.py_modules:
-        if isinstance(m, basestring):
+        if isinstance(m, str):
             modules.append(m)
         else:
             warnings.warn("The module %s it not understood" % str(m))
@@ -321,7 +321,7 @@ def prune_extra_files(files, pkg, top_node):
     package_files = [canonalize_path(f) for f in package_files]
 
     data_files = []
-    for data_section in pkg.data_files.values():
+    for data_section in list(pkg.data_files.values()):
         data_files.extend([posixpath.join(data_section.source_dir, f) for f in data_section.files])
 
     redundant = package_files + data_files + pkg.py_modules

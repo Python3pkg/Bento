@@ -58,19 +58,19 @@ Usage:   bentomaker parse [OPTIONS]"""
                 try:
                     flags = parsed["flags"]
                     for flag in flags:
-                        print(flags[flag])
+                        print((flags[flag]))
                 except KeyError:
                     pass
             elif o.path:
                 try:
                     paths = parsed["paths"]
                     for path in paths:
-                        print(paths[path])
+                        print((paths[path]))
                 except KeyError:
                     pass
             elif o.meta_field:
                 try:
-                    print(parsed[o.meta_field])
+                    print((parsed[o.meta_field]))
                 except KeyError:
                     raise ValueError("Field %s not found in metadata" % o.meta_field)
             else:

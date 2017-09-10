@@ -1,4 +1,4 @@
 try:
     import md5
-except ImportError, e:
+except ImportError as e:
     import hashlib

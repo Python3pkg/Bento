@@ -41,7 +41,7 @@ class TC(unittest.TestCase):
                          "file '%s' does not end with '%s'" % (nbase, suf))
 
         nbase = nbase[len(pre):len(nbase)-len(suf)]
-        self.assert_(self.str_check.match(nbase),
+        self.assertTrue(self.str_check.match(nbase),
                      "random string '%s' does not match /^[a-zA-Z0-9_-]{6}$/"
                      % nbase)
 
@@ -72,7 +72,7 @@ class test_NamedTemporaryFile(TC):
     def test_creates_named(self):
         # NamedTemporaryFile creates files with names
         f = tempfile.NamedTemporaryFile()
-        self.failUnless(os.path.exists(f.name),
+        self.assertTrue(os.path.exists(f.name),
                         "NamedTemporaryFile %s does not exist" % f.name)
 
     def test_del_on_close(self):
@@ -82,7 +82,7 @@ class test_NamedTemporaryFile(TC):
             f = tempfile.NamedTemporaryFile(dir=dir)
             f.write(_bytes('blat'))
             f.close()
-            self.failIf(os.path.exists(f.name),
+            self.assertFalse(os.path.exists(f.name),
                         "NamedTemporaryFile %s exists after close" % f.name)
         finally:
             os.rmdir(dir)
@@ -96,7 +96,7 @@ class test_NamedTemporaryFile(TC):
             tmp = f.name
             f.write(_bytes('blat'))
             f.close()
-            self.failUnless(os.path.exists(f.name),
+            self.assertTrue(os.path.exists(f.name),
                         "NamedTemporaryFile %s missing after close" % f.name)
         finally:
             if tmp is not None:

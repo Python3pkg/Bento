@@ -187,7 +187,7 @@ def fill_metadata_template(content, metadata):
         else:
             return repr(val)
 
-    meta_dict = dict((k.upper(), _safe_repr(v)) for k, v in metadata.items())
+    meta_dict = dict((k.upper(), _safe_repr(v)) for k, v in list(metadata.items()))
 
     return tpl.substitute(meta_dict)
 
@@ -354,7 +354,7 @@ class BuildContext(ContextWithBuildDirectory):
                 self.outputs_registry.register_outputs(category, name, nodes, from_node, target_dir)
 
         category = "scripts"
-        for name, executable in self.pkg.executables.items():
+        for name, executable in list(self.pkg.executables.items()):
             builder = self.builder_registry.builder(category, name)
             name, nodes, from_node, target_dir = builder(name, executable)
             self.outputs_registry.register_outputs(category, name, nodes, from_node, target_dir)

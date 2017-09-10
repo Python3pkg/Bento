@@ -33,9 +33,9 @@ class Peeker(object):
         self._dummy = dummy
 
     def __next__(self):
-        return self.next()
+        return next(self)
 
-    def next(self):
+    def __next__(self):
         if self._cache:
             i = self._cache
             self._cache = None
@@ -73,7 +73,7 @@ class BackwardGenerator(object):
         self._cache = []
         self._previous = None
 
-    def next(self):
+    def __next__(self):
         c = six.advance_iterator(self._gen)
         if len(self._cache) == 2:
             old, new = self._cache
@@ -81,8 +81,8 @@ class BackwardGenerator(object):
         self._cache.append(c)
         return c
 
-    def __next__(self):
-        return self.next()
+    # def __next__(self):
+    #     return next(self)
 
     def previous(self):
         if len(self._cache) < 2:

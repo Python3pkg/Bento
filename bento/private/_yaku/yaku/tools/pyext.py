@@ -107,7 +107,7 @@ def setup_pyext_env(ctx, cc_type="default", use_distutils=True):
         else:
             dist_env = get_configuration(cc_type)
         print(dist_env)
-        for name, value in dist_env.items():
+        for name, value in list(dist_env.items()):
             pyenv["PYEXT_%s" % name] = value
         pyenv["PYEXT_CFLAGS"].extend(dist_env.get("SHARED", []))
         pyenv["PYEXT_FMT"] = "%%s%s" % dist_env["SO"]
@@ -386,7 +386,7 @@ def _detect_cc_type(ctx, cc_cmd):
         env["LC_ALL"] = env["LANGUAGE"] = "C"
         p = Popen(cmd, stdout=PIPE, stderr=STDOUT, env=env)
         out = p.communicate()[0].decode()
-        for k, v in CC_SIGNATURE.items():
+        for k, v in list(CC_SIGNATURE.items()):
             m = v.search(out)
             if m:
                 return k

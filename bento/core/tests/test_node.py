@@ -19,7 +19,7 @@ class TestNode(unittest.TestCase):
         self.root = Node("", None)
 
         if sys.version_info[0] < 3:
-            self._string_classes = [str, unicode]
+            self._string_classes = [str, str]
         else:
             self._string_classes = [str]
 

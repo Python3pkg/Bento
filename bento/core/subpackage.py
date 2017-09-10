@@ -76,7 +76,7 @@ def flatten_subpackage_extensions(spkg, top_node):
         raise ValueError("Subpackage in top directory ??")
 
     ret = {}
-    for name, extension in spkg.extensions.items():
+    for name, extension in list(spkg.extensions.items()):
         parent_pkg = spkg.rdir.replace(os.sep, ".")
         full_name = parent_pkg + ".%s" % name
         sources = []
@@ -122,7 +122,7 @@ def flatten_subpackage_compiled_libraries(spkg, top_node):
         raise ValueError("Subpackage in top directory ??")
 
     ret = {}
-    for name, clib in spkg.compiled_libraries.items():
+    for name, clib in list(spkg.compiled_libraries.items()):
         nodes = []
         for source in clib.sources:
             _nodes = local_node.ant_glob(source)
@@ -149,9 +149,9 @@ def get_extensions(pkg, top_node):
     top_dir
     """
     extensions = {}
-    for name, ext in pkg.extensions.items():
+    for name, ext in list(pkg.extensions.items()):
         extensions[name] = ext
-    for spkg in pkg.subpackages.values():
+    for spkg in list(pkg.subpackages.values()):
         extensions.update(
                 flatten_subpackage_extensions(spkg, top_node))
     return extensions
@@ -166,9 +166,9 @@ def get_compiled_libraries(pkg, top_node):
     top_dir
     """
     libraries = {}
-    for name, ext in pkg.compiled_libraries.items():
+    for name, ext in list(pkg.compiled_libraries.items()):
         libraries[name] = ext
-    for spkg in pkg.subpackages.values():
+    for spkg in list(pkg.subpackages.values()):
         local_libs = flatten_subpackage_compiled_libraries(spkg,
                                                            top_node)
         libraries.update(local_libs)
@@ -179,7 +179,7 @@ def get_packages(pkg, top_node):
     in pkg, including the one defined in subpackages (if any).
     """
     packages = [p for p in pkg.packages]
-    for spkg in pkg.subpackages.values():
+    for spkg in list(pkg.subpackages.values()):
         local_pkgs = flatten_subpackage_packages(spkg, top_node)
         packages.extend(local_pkgs)
     return packages

@@ -61,7 +61,7 @@ def find_pre_hooks(modules, cmd_name):
     """
     pre_hooks = []
     for module in modules:
-        pre_hooks.extend([f for f in vars(module).values() if isinstance(f,
+        pre_hooks.extend([f for f in list(vars(module).values()) if isinstance(f,
             PreHookWrapper) and f.cmd_name == cmd_name])
     return pre_hooks
 
@@ -80,7 +80,7 @@ def find_post_hooks(modules, cmd_name):
     """
     post_hooks = []
     for module in modules:
-        post_hooks.extend([f for f in vars(module).values() if isinstance(f,
+        post_hooks.extend([f for f in list(vars(module).values()) if isinstance(f,
             PostHookWrapper) and f.cmd_name == cmd_name])
     return post_hooks
 
@@ -96,7 +96,7 @@ def find_startup_hooks(modules):
     """
     hooks = []
     for module in modules:
-        hooks.extend([f for f in vars(module).values() if isinstance(f, StartupHook)])
+        hooks.extend([f for f in list(vars(module).values()) if isinstance(f, StartupHook)])
     return hooks
 
 def find_shutdown_hooks(modules):
@@ -111,7 +111,7 @@ def find_shutdown_hooks(modules):
     """
     hooks = []
     for module in modules:
-        hooks.extend([f for f in vars(module).values() if isinstance(f, ShutdownHook)])
+        hooks.extend([f for f in list(vars(module).values()) if isinstance(f, ShutdownHook)])
     return hooks
 
 def find_options_hooks(modules):
@@ -126,7 +126,7 @@ def find_options_hooks(modules):
     """
     hooks = []
     for module in modules:
-        hooks.extend([f for f in vars(module).values() if isinstance(f, OptionsHook)])
+        hooks.extend([f for f in list(vars(module).values()) if isinstance(f, OptionsHook)])
     return hooks
 
 class _HookWrapperBase(object):
@@ -267,6 +267,6 @@ def find_command_hooks(modules):
     """
     commands = []
     for module in modules:
-        commands.extend([f for f in vars(module).values() if isinstance(f,
+        commands.extend([f for f in list(vars(module).values()) if isinstance(f,
             WrappedCommand)])
     return commands
